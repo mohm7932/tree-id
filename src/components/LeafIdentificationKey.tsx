@@ -10,52 +10,67 @@ import {
     ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton
+    ModalCloseButton,
+    Input
   } from '@chakra-ui/react'
+  import { Search2Icon } from '@chakra-ui/icons'
 import { useDisclosure } from '@chakra-ui/react'
 import LeafIdentificationFilters from './../questions'
 
-const FilterModal = (filter) => {
-    const {isOpen, onOpen, onClose} = useDisclosure()
-    return (
-        <div>
-            <Button onClick={onOpen}>{filter.filterText}</Button>
-        <Modal isOpen={isOpen} onOpen={onOpen}>
-            <ModalHeader>{filter.filterName}</ModalHeader>
-        </Modal>
-        </div>
-    )
-
-}
-
 export function LeafIdentificationKey() {
-
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [leafType, setLeafType] = useState(null);
-    const {isOpen, onOpen, onClose} = useDisclosure();
+    const [isOpenFilterSelectionModal, setIsOpenFilterSelection] = useState<boolean>(false)
+    const [filterParams, setFilterParams] = useState<{[key: string], string}>({})
+    const [searchValue, setSearchValue] = useState<string>('')
 
+    const setParam = (filter, option) => {
+        filterParams[filter.filterId] = option.optionId;
+    }
+
+    const applyFilters = () => {
+        setIsOpenFilterSelection(false)
+    }
 
     return (
         <div>
-            <Button onClick={onOpen}>Filter</Button>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Input 
+                placeholder='Search'
+                value={searchValue}
+                onChange={(e) => setSearchValue(event.target.value)}/>
+            <Button><Search2Icon/></Button>
+            <Button onClick={() => setIsOpenFilterSelection(true)}>Filter</Button>
+            <p></p>
+            <Modal isOpen={isOpenFilterSelectionModal} onClose={() => setIsOpenFilterSelection(false)}>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Filter</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        {LeafIdentificationFilters.map((filter) => {
+                        {LeafIdentificationFilters.filters.map((filter) => {
+                            const [isOpen, setIsOpen] = useState<boolean>(false)
                             return (
-                                <div>
-                                    
-                                    <FilterModal filter={filter}/>
+                                <div key={filter.filterId}>
+                                <Button onClick={() => setIsOpen(true)}>{filter.filterText}</Button>
+                                <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                                    <ModalOverlay />
+                                    <ModalContent>
+                                        <ModalHeader>{filter.filterText}</ModalHeader>
+                                        <ModalBody>
+                                            {filter.filterOptions.map((option) => {
+                                                return <Button key={option.optionId} onClick={() => setParam(filter, option)}>{option.optionText}</Button>
+                                            })}
+                                            <Button onClick={() => setIsOpen(false)}>Cancel</Button>
+                                        </ModalBody>
+                                    </ModalContent>
+                                </Modal>
                                 </div>
                             )
                         })}
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme='green' mr={3} onClick={onClose}>Apply</Button>
-                        <Button variant='ghost'>Cancel</Button>
+                        <Button colorScheme='green' mr={3} onClick={applyFilters}>Apply</Button>
+                        <Button onClick={() => setIsOpenFilterSelection(false)} variant='ghost'>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

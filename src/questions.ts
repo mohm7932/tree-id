@@ -1,15 +1,17 @@
 import {LeafType} from './types'
 
-const LeafIdentificationFilters = [
-    {
-        filterId: 0,
-        filterText: "family",
-        filterOptions: [
+const LeafIdentificationFilters = 
+{
+    filters: [
+    // {
+    //     filterId: 0,
+    //     filterText: "family",
+    //     filterOptions: [
 
-        ]
-    },
+    //     ]
+    // },
     {
-        filterId: 1,
+        filterId: "leafType",
         filterText: "leaf type",
         filterOptions: [
             { 
@@ -24,15 +26,15 @@ const LeafIdentificationFilters = [
             },
         ]
     },
-    {
-        filterId: 2,
-        filterText: "leaf shape",
-        filterOptions: [
+    // {
+    //     filterId: 2,
+    //     filterText: "leaf shape",
+    //     filterOptions: [
 
-        ]
-    },
+    //     ]
+    // },
     {
-        filterId: 4,
+        filterId: "leafMargin",
         filterText: "leaf margin",
         filterOptions: [
             { 
@@ -58,4 +60,5 @@ const LeafIdentificationFilters = [
         ]
     },
 ]
+}
 export default LeafIdentificationFilters
