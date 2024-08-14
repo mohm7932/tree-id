@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {LeafType} from './../types'
 import {BroadOrConifer} from './questions/BroadOrConifer'
 import questions from './../questions'
@@ -11,37 +11,25 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-    Input
+    useBoolean,
+    useDisclosure
   } from '@chakra-ui/react'
   import { Search2Icon } from '@chakra-ui/icons'
-import { useDisclosure } from '@chakra-ui/react'
-import LeafIdentificationFilters from './../questions'
+import LeafIdentificationFilters from './../filters'
 
-export function LeafIdentificationKey() {
+export function FilterModal(props: {hook}) {
+    let hook = props.hook
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [leafType, setLeafType] = useState(null);
-    const [isOpenFilterSelectionModal, setIsOpenFilterSelection] = useState<boolean>(false)
     const [filterParams, setFilterParams] = useState<{[key: string], string}>({})
-    const [searchValue, setSearchValue] = useState<string>('')
 
     const setParam = (filter, option) => {
         filterParams[filter.filterId] = option.optionId;
     }
 
-    const applyFilters = () => {
-        setIsOpenFilterSelection(false)
-    }
-
     return (
         <div>
-            <Input 
-                placeholder='Search'
-                value={searchValue}
-                onChange={(e) => setSearchValue(event.target.value)}/>
-            <Button><Search2Icon/></Button>
-            <Button onClick={() => setIsOpenFilterSelection(true)}>Filter</Button>
-            <p></p>
-            <Modal isOpen={isOpenFilterSelectionModal} onClose={() => setIsOpenFilterSelection(false)}>
+            <Modal isOpen={hook.isOpen} onClose={hook.onClose}>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Filter</ModalHeader>
@@ -69,8 +57,8 @@ export function LeafIdentificationKey() {
                         })}
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme='green' mr={3} onClick={applyFilters}>Apply</Button>
-                        <Button onClick={() => setIsOpenFilterSelection(false)} variant='ghost'>Cancel</Button>
+                        <Button colorScheme='green' mr={3}>Apply</Button>
+                        <Button variant='ghost'>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

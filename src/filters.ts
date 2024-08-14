@@ -3,13 +3,6 @@ import {LeafType} from './types'
 const LeafIdentificationFilters = 
 {
     filters: [
-    // {
-    //     filterId: 0,
-    //     filterText: "family",
-    //     filterOptions: [
-
-    //     ]
-    // },
     {
         filterId: "leafType",
         filterText: "leaf type",
@@ -26,13 +19,6 @@ const LeafIdentificationFilters =
             },
         ]
     },
-    // {
-    //     filterId: 2,
-    //     filterText: "leaf shape",
-    //     filterOptions: [
-
-    //     ]
-    // },
     {
         filterId: "leafMargin",
         filterText: "leaf margin",
@@ -59,6 +45,6 @@ const LeafIdentificationFilters =
             },
         ]
     },
-]
-}
+]}
+
 export default LeafIdentificationFilters
